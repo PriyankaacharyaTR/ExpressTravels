@@ -1,0 +1,46 @@
+{
+    "name": "Mariana Trench",
+    "location": "Western Pacific Ocean",
+    "description": "The Mariana Trench is the deepest part of the world's oceans, located in the western Pacific Ocean. It is a crescent-shaped trench and is about 2,550 kilometers (1,580 mi) long but has an average width of only 69 kilometers (43 mi). It reaches a maximum known depth of 10,994 meters (36,070 ft) at a small slot-shaped valley in its floor known as the Challenger Deep.  ",
+    "images": [],
+    "coordinates": {
+        "latitude": 11.345,
+        "longitude": 142.242
+    },
+    "category": "Natural Wonder",
+    "rating": 4.8,
+    "historicalSignificance": "Site of the deepest dive in human history.",
+    "bestTimeToVisit": "N/A",
+    "entryFee": {
+        "currency": "USD",
+        "amount": 0
+    },
+    "openingHours": {
+        "monday": "Closed",
+        "tuesday": "Closed",
+        "wednesday": "Closed",
+        "thursday": "Closed",
+        "friday": "Closed",
+        "saturday": "Closed",
+        "sunday": "Closed"
+    },
+    "activities": [],
+    "nearbyAttractions": [],
+    "accessibility": "Extremely Difficult. Requires specialized submersible vehicles.",
+    "travelTips": "Not accessible to tourists. Research expeditions only.",
+    "contactInfo": {
+        "phone": "",
+        "email": "",
+        "website": ""
+    },
+    "reviews": [],
+    "tags": ["ocean", "deep sea", "trench", "pacific ocean", "challenger deep", "exploration"],
+    "weatherInfo": {
+        "summer": "N/A",
+        "winter": "N/A"
+    },
+    "safetyInfo": "Extreme pressure and darkness. Only accessible by specialized equipment.",
+    "popularityScore": 4.5,
+    "travelGuideAvailable": false,
+    "photographersTips": "Specialized underwater photography equipment required for any potential expeditions."
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nearby Events Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    #app {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #fff;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    strong {
+      color: #007bff;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Nearby Events Finder</h1>
+    <button id="fetchEvents">Get Nearby Events</button>
+    <p id="errorMessage" class="error"></p>
+    <ul id="eventsList"></ul>
+  </div>
+
+  <script>
+    document.getElementById("fetchEvents").addEventListener("click", () => {
+      // Step 1: Get the user's location
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+
+            // Step 2: Fetch events from both APIs
+            const foursquareEvents = await fetchFoursquareEvents(latitude, longitude);
+            const predicthqEvents = await fetchPredictHQEvents(latitude, longitude);
+
+            // Step 3: Display results
+            displayEvents([...foursquareEvents, ...predicthqEvents]);
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            showError("Unable to fetch location. Please enable location services.");
+          }
+        );
+      } else {
+        showError("Geolocation is not supported by this browser.");
+      }
+    });
+
+    // Fetch events from Foursquare API
+    async function fetchFoursquareEvents(lat, lon) {
+      const apiKey = "fsq3whiNqEapQe6AwsM/EHBAqCgQRcRqLs3pCARcuVWdaxI=";
+      const url = https://api.foursquare.com/v3/places/search?ll=${lat},${lon}&query=event&radius=5000;
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: apiKey,
+          },
+        });
+        const data = await response.json();
+        return data.results.map((place) => ({
+          title: place.name,
+          location: place.location ? ${place.location.address}, ${place.location.locality} : "Unknown",
+          category: "Foursquare Event",
+        }));
+      } catch (error) {
+        console.error("Error fetching Foursquare events:", error);
+        return [];
+      }
+    }
+
+    // Fetch events from PredictHQ API
+    async function fetchPredictHQEvents(lat, lon) {
+      const apiKey = "3gKBGE9BHkc9BiqslpGHK4kwlC9_B74W-ErPMYPJ";
+      const url = https://api.predicthq.com/v1/events/?within=5km@${lat},${lon}&category=concerts,festivals;
+
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: Bearer ${apiKey},
+            Accept: "application/json",
+          },
+        });
+        const data = await response.json();
+        return data.results.map((event) => ({
+          title: event.title,
+          location: event.location ? event.location.join(", ") : "Unknown",
+          category: event.category,
+        }));
+      } catch (error) {
+        console.error("Error fetching PredictHQ events:", error);
+        return [];
+      }
+    }
+
+    // Display events on the page
+    function displayEvents(events) {
+      const eventsList = document.getElementById("eventsList");
+      const errorMessage = document.getElementById("errorMessage");
+      errorMessage.textContent = ""; // Clear any error messages
+      eventsList.innerHTML = ""; // Clear previous results
+
+      if (events.length === 0) {
+        eventsList.innerHTML = "<li>No events found.</li>";
+        return;
+      }
+
+      events.forEach((event) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `
+          <strong>${event.title}</strong><br>
+          Location: ${event.location}<br>
+          Category: ${event.category}
+        `;
+        eventsList.appendChild(listItem);
+      });
+    }
+
+    // Show error messages
+    function showError(message) {
+      const errorMessage = document.getElementById("errorMessage");
+      errorMessage.textContent = message;
+    }
+  </script>
+</body>
+</html>
